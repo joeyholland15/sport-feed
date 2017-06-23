@@ -19,7 +19,7 @@
       "eslint-config-airbnb-base",
       "eslint-config-airbnb-base/rules/strict",
       "eslint-config-airbnb/rules/react"
-    ],
+    ]
   },
   "devDependencies": {
     "babel-core": "^6.22.1",

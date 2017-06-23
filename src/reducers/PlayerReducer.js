@@ -9,7 +9,22 @@ export default function PlayerReducer(state = INITIAL_STATE, action) {
         ...state,
         items: {
           ...state.items,
-          [action.playerId]: action.games,
+          [action.playerId]: {
+            ...state.items[action.playerId],
+            logs: action.games,
+          },
+        },
+      };
+
+    case 'FETCH_HITTER_STATS_SUCCESS':
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [action.playerId]: {
+            ...state.items[action.playerId],
+            cumulative: action.stats,
+          },
         },
       };
 

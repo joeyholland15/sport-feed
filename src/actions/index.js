@@ -1,14 +1,28 @@
 import axios from 'axios';
 import * as actions from './types';
 import { addDays } from '../constants/date';
+import { USERNAME, TOKEN } from '../../config';
 
 const API = 'http://localhost:8081';
 const SPORTS_FEED_API = 'https://www.mysportsfeeds.com/api/feed/pull/mlb/2016-regular/';
 
-const username = 'joeyholland15';
-const password = 'mysportsfeed4444';
+const HITTER_STATS = [
+  'H',
+  'RBI',
+  'HR',
+  'PA',
+  'SB',
+  '2B',
+  '3B',
+  'BB',
+  'HBP',
+  'R',
+  'LD', // BatterLineDrives
+  'FlyB', // BatterFlyBalls
+  'GroB', // BatterGroundBalls
+];
 
-const encryptedAuth = window.btoa(`${username}:${password}`);
+const encryptedAuth = window.btoa(`${USERNAME}:${TOKEN}`);
 
 export function fetchTeamGameLogsSuccess(games) {
   return {
@@ -367,5 +381,74 @@ export function setDate(date) {
   return {
     type: actions.SET_DATE,
     date,
+  };
+}
+
+export function fetchHitterGamelogsSuccess(games, playerId) {
+  return {
+    type: actions.FETCH_HITTER_LOGS_SUCCESS,
+    games,
+    playerId,
+  };
+}
+
+export function fetchHitterGamelogs(playerId) {
+  return (dispatch) => {
+    dispatch({
+      type: actions.FETCH_HITTER_LOGS,
+    });
+    const hitterStats = [
+      'H',
+      'RBI',
+      'HR',
+      'PA',
+      'SB',
+      '2B',
+      '3B',
+      'BB',
+      'HBP',
+      'R',
+      'LD', // BatterLineDrives
+      'FlyB', // BatterFlyBalls
+      'GroB', // BatterGroundBalls
+    ];
+    return axios.get(`${SPORTS_FEED_API}player_gamelogs.json?player=${playerId}&playerstats=${hitterStats.join(',')}`, {
+      headers: {
+        Authorization: `Basic ${encryptedAuth}`,
+      },
+    }).then((resp) => {
+      if (resp.error) {
+        return resp.error;
+      }
+      const games = resp.data.playergamelogs.gamelogs;
+      return dispatch(fetchHitterGamelogsSuccess(games, playerId));
+    });
+  };
+}
+
+export function fetchHitterStatsSuccess(stats, playerId) {
+  return {
+    type: actions.FETCH_HITTER_STATS_SUCCESS,
+    stats,
+    playerId,
+  };
+}
+
+export function fetchHitterStats(playerId) {
+  return (dispatch) => {
+    dispatch({
+      type: actions.FETCH_HITTER_STATS,
+    });
+    return axios.get(`${SPORTS_FEED_API}cumulative_player_stats.json?player=${playerId}&playerstats=${HITTER_STATS.join(',')}`, {
+      headers: {
+        Authorization: `Basic ${encryptedAuth}`,
+      },
+    }).then((resp) => {
+      if (resp.error) {
+        return resp.error;
+      }
+      const stats = resp.data.cumulativeplayerstats.playerstatsentry[0].stats;
+      return dispatch(fetchHitterStatsSuccess(stats, playerId));
+    });
   };
 }

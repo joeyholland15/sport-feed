@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchHitterGamelogs } from '../../actions';
-import './Player.scss';
+import PlayerChart from './PlayerChart';
+import { fetchHitterGamelogs, fetchHitterStats } from '../../actions';
 import { makeDateNoPretty } from '../../constants/date';
 import { logos } from '../../constants/logosByTeam';
+import './Player.scss';
 
 class Player extends Component {
   static propTypes = {
     fetchHitterGamelogs: React.PropTypes.func.isRequired,
+    fetchHitterStats: React.PropTypes.func.isRequired,
     playerId: React.PropTypes.string.isRequired,
     jerseyNumber: React.PropTypes.string,
     name: React.PropTypes.string,
@@ -26,6 +28,7 @@ class Player extends Component {
 
   componentWillMount() {
     this.props.fetchHitterGamelogs(this.props.playerId);
+    this.props.fetchHitterStats(this.props.playerId);
   }
 
   formatDate = (date) => {
@@ -60,6 +63,9 @@ class Player extends Component {
           <div>{`${this.props.name} | ${this.props.position}`}</div>
           <img alt="" src={`${logos[this.props.team]}`} />
         </div>
+        <div>
+          <PlayerChart playerId={this.props.playerId} />
+        </div>
         <div className="player-logs">
           {this.props.playerLogs && this.props.playerLogs.map(game => (
             <div key={`${game.game.id}`} className="player-log">
@@ -74,7 +80,7 @@ class Player extends Component {
 }
 
 const mapStateToProps = (state, { playerId }) => {
-  const playerLogs = state.players.items[playerId];
+  const playerLogs = state.players.items[playerId] && state.players.items[playerId].logs;
   const player = playerLogs && playerLogs[0] && playerLogs[0].player;
   const teamObj = playerLogs && playerLogs[0] && playerLogs[0].team;
 
@@ -92,4 +98,4 @@ const mapStateToProps = (state, { playerId }) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchHitterGamelogs })(Player);
+export default connect(mapStateToProps, { fetchHitterGamelogs, fetchHitterStats })(Player);
