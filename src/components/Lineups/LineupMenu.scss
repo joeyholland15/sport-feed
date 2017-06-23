@@ -1,0 +1,55 @@
+.lineups {
+  border: 1px solid #dddddd;
+  margin: 20px 0;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 11px;
+}
+
+.linuep-title {
+  font-size: 14px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #dddddd;
+}
+
+.lineup-menu-placeholder {
+  text-align: center;
+  color: lightgray; // give the appearance of a placeholder
+  font-size: 14px;
+  padding: 0 10px; // extra padding for better appearance
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+
+.lineup-menu-body {
+  height: 300px;
+  overflow-y: auto;
+}
+
+.lineup-clear {
+  width: 100%;
+
+  button {
+    width: 100%;
+    font-size: 12px;
+    height: 25px;
+    background: aliceblue;
+    border: none;
+    transition: 0.2s background;
+    cursor: pointer;
+    margin-top: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+    &:hover {
+      background: lightblue;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

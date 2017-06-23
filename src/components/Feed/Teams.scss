@@ -1,0 +1,68 @@
+.team-average-row {
+  display: flex;
+  border-bottom: 1px solid #dddddd;
+  font-size: 10px;
+
+  div {
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+
+    img {
+      width: 16px;
+    }
+  }
+}
+
+.score-cell {
+  border: 1px solid #dddddd;
+  cursor: pointer;
+}
+
+.high {
+  background: green;
+}
+
+.medium-high {
+  background: lightgreen;
+}
+
+.medium-low {
+  background: orange;
+}
+
+.low {
+  background: tomato;
+}
+
+.today {
+  border-right: 2px solid black;
+  border-left: 2px solid black;
+}
+
+.win {
+  color: green;
+}
+
+.loss {
+  color: red;
+}
+
+.win-high {
+  background: green;
+  color: white;
+}
+
+.win-medium {
+  background: lightgreen;
+}
+
+.loss-medium {
+  background: orange;
+  color: white;
+}
+
+.loss-low {
+  background: tomato;
+  color: white;
+}

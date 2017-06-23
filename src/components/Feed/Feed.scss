@@ -1,0 +1,119 @@
+$border-gray: #dddddd;
+$radius: 5px;
+$base-font-size: 12px;
+$hover-background: #F0F8FF;
+$vertical-padding: 9px;
+$image-width: 16px;
+
+.feed-row {
+  display: flex;
+  border-bottom: 1px solid $border-gray;
+  font-size: $base-font-size;
+}
+
+.row-future,
+.row-history {
+  display: flex;
+  min-width: 200px;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+
+  div {
+    flex: 1;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+  }
+}
+
+.row-future {
+  min-width: 125px;
+}
+
+.feed-row:last-child {
+  border: none;
+}
+
+.feed-row-name {
+  flex: 3;
+  display: flex;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+  }
+
+  .player-name {
+    flex: 3;
+  }
+
+  .hitter-team-logo {
+    flex: 1;
+  }
+
+  .hitter-team-row {
+    flex: 4;
+
+    a {
+      text-decoration: none;
+      color: black;
+
+      &:hover {
+        color: gray;
+      }
+    }
+  }
+
+  img {
+    width: $image-width;
+    margin-right: 10px;
+  }
+
+  &:hover {
+    .view-logs {
+      opacity: 1;
+    }
+  }
+}
+
+.feed-row-image {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  img {
+    width: $image-width;
+    margin: 0 auto;
+  }
+}
+
+.feed-row-cell {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.view-logs {
+  flex: 1;
+  cursor: pointer;
+  opacity: 0;
+
+  &:hover {
+    color: #dddddd;
+    transition: color 0.3s;
+  }
+}
+
+.recent-row {
+  padding: 10px 100px;
+  display: flex;
+  border-bottom: 1px solid $border-gray;
+  font-size: $base-font-size;
+
+  div {
+    flex: 1;
+  }
+}

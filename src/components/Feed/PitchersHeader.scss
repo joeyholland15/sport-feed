@@ -1,0 +1,23 @@
+$border-gray: #dddddd;
+$radius: 5px;
+$base-font-size: 12px;
+$hover-background: #F0F8FF;
+$vertical-padding: 9px;
+$image-width: 16px;
+
+.header-row {
+  border-bottom: 1px solid $border-gray;
+  display: flex;
+  font-size: $base-font-size;
+  padding: 10px 0;
+
+  .large {
+    flex: 3;
+    text-align: left;
+  }
+
+  div {
+    flex: 1;
+    text-align: center;
+  }
+}

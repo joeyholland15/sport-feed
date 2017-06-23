@@ -1,0 +1,84 @@
+$border-gray: #dddddd;
+$radius: 5px;
+$base-font-size: 11px;
+$hover-background: #F0F8FF;
+$vertical-padding: 9px;
+
+.tile-menu {
+  border: 1px solid $border-gray;
+  border-radius: $radius;
+}
+
+.tile-menu-row {
+  display: flex;
+  font-size: $base-font-size;
+
+  div {
+    padding: 4px;
+    border: 1px solid $border-gray;
+  }
+
+  .tile-menu-title {
+    flex: 3;
+    font-weight: 600;
+    font-size: 11.5px;
+    padding: $vertical-padding 0 $vertical-padding $vertical-padding;
+  }
+
+  .tile-menu-cell {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    overflow:hidden;
+  }
+}
+
+.tile-menu-row-header {
+  display: flex;
+  font-size: $base-font-size;
+  font-weight: 600;
+
+  div {
+    padding: 4px;
+    border: 1px solid $border-gray;
+  }
+
+  .tile-menu-title {
+    flex: 3;
+    font-weight: 550;
+    font-size: 11.5px;
+    padding: $vertical-padding 0 $vertical-padding $vertical-padding;
+  }
+
+  .tile-menu-cell {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  background:rgba(0,0,0,.15);
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+}

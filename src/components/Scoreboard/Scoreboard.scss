@@ -1,0 +1,28 @@
+.scoreboard {
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  font-size: 12px;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.score {
+  width: calc(50% - 22px);
+  display: inline-block;
+  margin: 5px;
+  background: aliceblue;
+  padding: 5px;
+
+  div {
+    display: flex;
+
+    .team-name {
+      flex: 2;
+    }
+
+    .team-score {
+      flex: 1;
+      text-align: center;
+    }
+  }
+}

@@ -1,0 +1,43 @@
+.player-header {
+  display: flex;
+  margin-bottom: 12px;
+  width: 100%;
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 12px;
+  position: relative;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 12px;
+  }
+
+  img {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 0px;
+  }
+
+  .jersey-number {
+    background: aliceblue;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    border-radius: 8px;
+  }
+}
+
+.player-logs {
+  font-size: 12px;
+
+  .player-log {
+    display: flex;
+    padding: 4px 0;
+
+    div {
+      flex: 1;
+    }
+  }
+}

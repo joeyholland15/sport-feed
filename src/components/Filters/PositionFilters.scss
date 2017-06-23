@@ -1,0 +1,25 @@
+$red: red;
+
+.filters {
+  margin: 20px 0;
+  border: 1px solid #dddddd;
+  display: flex;
+  font-size: 11px;
+  border-radius: 5px;
+}
+
+.filter {
+  flex: 1;
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 10px 0;
+  cursor: pointer;
+
+  &:hover {
+    background: aliceblue;
+  }
+}
+
+.selected {
+  background: lightblue;
+}

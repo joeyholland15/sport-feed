@@ -1,0 +1,23 @@
+.hitter-pitcher-filters {
+  display: flex;
+  color: #2d2e2e;
+  transition: color 0.3s;
+
+  &:hover {
+    color: lightgray;
+  }
+
+  div {
+    padding: 2px 10px;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+      color: #2d2e2e;
+    }
+  }
+}
+
+.active {
+  border-bottom: 4px solid #2d2e2e;
+}

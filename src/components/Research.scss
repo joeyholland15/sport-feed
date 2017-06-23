@@ -1,0 +1,39 @@
+.container {
+  margin: 40px;
+}
+
+.research-row {
+  display: flex;
+  font-size: 11px;
+
+  .research-name {
+    flex: 4;
+    padding: 0 10px;
+  }
+
+  .research-points {
+    flex: 1;
+    text-align: center;
+  }
+
+  div {
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4px 0;
+  }
+}
+
+.bomb {
+  background: lightgreen;
+}
+
+.sparq {
+  background: black;
+  color: white;
+}
+
+.bad {
+  background: tomato;
+}

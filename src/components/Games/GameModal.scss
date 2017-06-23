@@ -1,0 +1,46 @@
+.box-score-container {
+  display: flex;
+  width: 100%;
+
+  .team {
+    flex: 1;
+    padding: 0 10px;
+
+    img {
+      width: 16px;
+      margin-right: 10px;
+    }
+  }
+}
+
+.stat-item {
+  display: flex;
+  font-size: 11px;
+  padding: 2px 0;
+
+  div {
+    flex: 1;
+  }
+
+  .stat-item-name {
+    flex: 2.5;
+  }
+}
+
+.pitcher-item {
+  margin-bottom: 10px;
+}
+
+.game-date {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.header {
+  margin-bottom: 12px;
+  display: flex;
+
+  div {
+    flex: 1;
+  }
+}
