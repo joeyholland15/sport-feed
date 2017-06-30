@@ -3,7 +3,6 @@ import * as actions from './types';
 import { addDays } from '../constants/date';
 import { USERNAME, TOKEN } from '../../config';
 
-const API = 'http://localhost:8081';
 const SPORTS_FEED_API = 'https://www.mysportsfeeds.com/api/feed/pull/mlb/2016-regular/';
 
 const HITTER_STATS = [
@@ -20,6 +19,7 @@ const HITTER_STATS = [
   'LD', // BatterLineDrives
   'FlyB', // BatterFlyBalls
   'GroB', // BatterGroundBalls
+  'XBH', // Extra base hits
 ];
 
 const encryptedAuth = window.btoa(`${USERNAME}:${TOKEN}`);
@@ -73,33 +73,6 @@ export function fetchStartingLineup(gameId) {
       console.log('RESP', resp.data)
       // const games = resp.data.teamgamelogs.gamelogs;
       // return dispatch(fetchStartingLineupSuccess(games));
-    });
-  };
-}
-
-export function fetchPlayByPlaySuccess(atBats, gameId) {
-  return {
-    type: actions.FETCH_PLAYBYPLAY_SUCCESS,
-    atBats,
-    gameId,
-  };
-}
-
-export function fetchPlayByPlay(gameId) {
-  return (dispatch) => {
-    dispatch({
-      type: actions.FETCH_PLAYBYPLAY,
-    });
-    return axios.get(`${SPORTS_FEED_API}game_playbyplay.json?gameid=${gameId}`, {
-      headers: {
-        Authorization: `Basic ${encryptedAuth}`,
-      },
-    }).then((resp) => {
-      if (resp.error) {
-        return resp.error;
-      }
-      const atBats = resp.data.gameplaybyplay.atBats.atBat;
-      return dispatch(fetchPlayByPlaySuccess(atBats, gameId));
     });
   };
 }
@@ -243,34 +216,6 @@ export function fetchScoreboard(date) {
   };
 }
 
-export function fetchBoxScoreSuccess(data, gameId) {
-  return {
-    type: actions.FETCH_BOXSCORE_SUCCESS,
-    data,
-    gameId,
-  };
-}
-
-export function fetchBoxScore(gameId) {
-  return (dispatch) => {
-    dispatch({
-      type: actions.FETCH_BOXSCORE,
-      gameId,
-    });
-    return axios.get(`${SPORTS_FEED_API}game_boxscore.json?gameid=${gameId}`, {
-      headers: {
-        Authorization: `Basic ${encryptedAuth}`,
-      },
-    }).then((resp) => {
-      if (resp.error) {
-        return resp.error;
-      }
-      const boxScore = resp.data.gameboxscore;
-      return dispatch(fetchBoxScoreSuccess(boxScore, gameId));
-    });
-  };
-}
-
 export function fetchScoreTrendSuccess(data, date = '20160521') {
   return {
     type: actions.FETCH_SCORE_TREND_SUCCESS,
@@ -295,29 +240,6 @@ export function fetchScoreTrend(date) {
       }
       const scores = resp.data.scoreboard.gameScore;
       return dispatch(fetchScoreTrendSuccess(scores, date));
-    });
-  };
-}
-
-export function fetchTeamHistorySuccess(stats, date) {
-  return {
-    type: actions.FETCH_TEAM_HISTORY_SUCCESS,
-    stats,
-    date,
-  };
-}
-
-export function fetchTeamHistory(date) {
-  return (dispatch) => {
-    dispatch({
-      type: actions.FETCH_TEAM_HISTORY,
-      date,
-    });
-    return axios.get(`${API}/teams/history/${addDays(date, 10)}`).then((resp) => {
-      if (resp.error) {
-        return resp.error;
-      }
-      return dispatch(fetchTeamHistorySuccess(resp.data, date));
     });
   };
 }
@@ -381,74 +303,5 @@ export function setDate(date) {
   return {
     type: actions.SET_DATE,
     date,
-  };
-}
-
-export function fetchHitterGamelogsSuccess(games, playerId) {
-  return {
-    type: actions.FETCH_HITTER_LOGS_SUCCESS,
-    games,
-    playerId,
-  };
-}
-
-export function fetchHitterGamelogs(playerId) {
-  return (dispatch) => {
-    dispatch({
-      type: actions.FETCH_HITTER_LOGS,
-    });
-    const hitterStats = [
-      'H',
-      'RBI',
-      'HR',
-      'PA',
-      'SB',
-      '2B',
-      '3B',
-      'BB',
-      'HBP',
-      'R',
-      'LD', // BatterLineDrives
-      'FlyB', // BatterFlyBalls
-      'GroB', // BatterGroundBalls
-    ];
-    return axios.get(`${SPORTS_FEED_API}player_gamelogs.json?player=${playerId}&playerstats=${hitterStats.join(',')}`, {
-      headers: {
-        Authorization: `Basic ${encryptedAuth}`,
-      },
-    }).then((resp) => {
-      if (resp.error) {
-        return resp.error;
-      }
-      const games = resp.data.playergamelogs.gamelogs;
-      return dispatch(fetchHitterGamelogsSuccess(games, playerId));
-    });
-  };
-}
-
-export function fetchHitterStatsSuccess(stats, playerId) {
-  return {
-    type: actions.FETCH_HITTER_STATS_SUCCESS,
-    stats,
-    playerId,
-  };
-}
-
-export function fetchHitterStats(playerId) {
-  return (dispatch) => {
-    dispatch({
-      type: actions.FETCH_HITTER_STATS,
-    });
-    return axios.get(`${SPORTS_FEED_API}cumulative_player_stats.json?player=${playerId}&playerstats=${HITTER_STATS.join(',')}`, {
-      headers: {
-        Authorization: `Basic ${encryptedAuth}`,
-      },
-    }).then((resp) => {
-      if (resp.error) {
-        return resp.error;
-      }
-      const stats = resp.data.cumulativeplayerstats.playerstatsentry[0].stats;
-      return dispatch(fetchHitterStatsSuccess(stats, playerId));
-    });
   };
 }

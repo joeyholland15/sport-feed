@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styles from './Feed.scss';
+import './Feed.scss';
 import { logos } from '../../constants/logosByTeam';
 import { dailyHittersByRating } from '../../selectors/FeedSelectors';
 import LineupAdd from '../Lineups/LineupAdd';

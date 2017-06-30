@@ -1,10 +1,23 @@
+.player-container {
+  display: flex;
+
+  .player-info {
+    flex: 1;
+  }
+
+  .player-body {
+    flex: 3;
+    padding-left: 20px;
+  }
+}
+
 .player-header {
   display: flex;
   margin-bottom: 12px;
-  width: 100%;
   border-bottom: 1px solid #dddddd;
-  padding-bottom: 12px;
+  padding-bottom: 8px;
   position: relative;
+  margin-right: 20px;
 
   div {
     display: flex;
@@ -14,10 +27,8 @@
   }
 
   img {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    right: 0px;
+    width: 20px;
+    height: 20px;
   }
 
   .jersey-number {
@@ -29,15 +40,44 @@
   }
 }
 
-.player-logs {
-  font-size: 12px;
+.player-body {
+  display: flex;
 
-  .player-log {
-    display: flex;
-    padding: 4px 0;
+  .player-logs {
+    flex: 3;
+    font-size: 12px;
+    border: 1px solid #dddddd;
 
-    div {
-      flex: 1;
+    .player-log {
+      display: flex;
+
+      div {
+        flex: 1;
+        border: 1px solid #dddddd;
+        padding: 4px 12px;
+        text-align: center;
+      }
+
+      .large-cell {
+        flex: 2;
+        text-align: left;
+      }
     }
   }
+
+  .player-chart {
+    flex: 1;
+  }
+}
+
+.is-sparq {
+  background: lightgreen;
+}
+
+.ruled-out {
+  background: lightcoral;
+}
+
+.in-streak {
+  // background: lightgreen;
 }

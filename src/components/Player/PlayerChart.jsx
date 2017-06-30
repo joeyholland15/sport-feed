@@ -33,15 +33,13 @@ class PlayerChart extends Component {
       'chart-container',
       {
         chart: {
-          plotBackgroundColor: null,
-          plotBorderWidth: 0,
-          plotShadow: false,
+          margin: 0,
         },
         title: {
           text: 'Batter<br>Breakdown',
           align: 'center',
           verticalAlign: 'middle',
-          y: 40,
+          y: 50,
         },
         tooltip: {
           pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
@@ -63,19 +61,11 @@ class PlayerChart extends Component {
         },
         series: [{
           type: 'pie',
-          name: 'Hitter Breakdown',
           innerSize: '50%',
           data: [
             ['Grounders', grounders],
             ['Line Drives', lineDrives],
             ['Fly Balls', flyBalls],
-            {
-              name: 'Proprietary or Undetectable',
-              y: 0.2,
-              dataLabels: {
-                enabled: false,
-              },
-            },
           ],
         }],
       },
@@ -90,7 +80,7 @@ class PlayerChart extends Component {
 }
 
 const mapStateToProps = (state, { playerId }) => {
-  const cumulativeStats = state.players.items[playerId] && state.players.items[playerId].cumulative;
+  const cumulativeStats = state.players.items[playerId] && state.players.items[playerId].stats;
 
   return {
     stats: cumulativeStats,

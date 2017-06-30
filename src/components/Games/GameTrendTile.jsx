@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styles from '../Feed/Teams.scss';
 import { logos } from '../../constants/logosByTeam';
 import { teamAverageSelector, teamTrendSelector } from '../../selectors/FeedSelectors';
-import { fetchBoxScore } from '../../actions';
+import { fetchBoxScore } from '../../actions/GameActions';
 import GameModal from './GameModal';
 
 class GameTrendTile extends Component {

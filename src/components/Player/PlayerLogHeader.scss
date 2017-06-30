@@ -1,0 +1,14 @@
+.player-log-header {
+  display: flex;
+  font-weight: bold;
+
+  div {
+    flex: 1;
+    text-align: center;
+  }
+
+  .large-cell {
+    flex: 2;
+    text-align: left;
+  }
+}

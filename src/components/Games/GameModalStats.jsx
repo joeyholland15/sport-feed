@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styles from './GameModal.scss';
+import './GameModal.scss';
 import { logos } from '../../constants/logosByTeam';
 import GameModalStatItem from './GameModalStatItem';
-import { fetchStatsByDate, fetchPlayByPlay, fetchStartingLineup } from '../../actions';
+import { fetchStatsByDate, fetchStartingLineup } from '../../actions';
+import { fetchPlayByPlay } from '../../actions/GameActions';
 
 class GameModalStats extends Component {
   componentDidMount() {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import TileMenu from './Menu/TileMenu';
 import PositionFilters from './Filters/PositionFilters';
 import SalaryFilters from './Filters/SalaryFilters';
 import TeamFilters from './Filters/TeamFilters';
@@ -10,21 +9,24 @@ import Scoreboard from './Scoreboard/Scoreboard';
 import HitterPitcherFilters from './Filters/HitterPitcherFilters';
 import DatePicker from './Date/DatePicker';
 import Feed from './Feed/Feed';
-import RecentHitterContainer from './Feed/RecentHitterContainer';
-import HitterFutureContainer from './Feed/HitterFutureContainer';
-import styles from './App.scss';
+import './App.scss';
 import { fetchStatsByDate, fetchDailyStatsByDate, fetchTeamGameLogs } from '../actions';
-import { previousDay, nextDay } from '../constants/date';
+import { fetchAllCumulativeStats } from '../actions/PlayerActions';
 import { gameLogTeams } from '../constants/mlbTeams';
 
 class App extends Component {
   componentWillMount() {
-    this.props.fetchDailyStatsByDate(this.props.date);
-    this.props.fetchStatsByDate(this.props.date);
+    if (!this.props.loaded) {
+      this.props.fetchDailyStatsByDate(this.props.date);
+      this.props.fetchStatsByDate(this.props.date);
+      this.props.fetchAllCumulativeStats();
+    }
   }
 
   componentDidMount() {
-    this.props.fetchTeamGameLogs(gameLogTeams.join(','));
+    if (!this.props.loaded) {
+      this.props.fetchTeamGameLogs(gameLogTeams.join(','));
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,8 +39,6 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <RecentHitterContainer date={this.props.date} />
-        <HitterFutureContainer date={this.props.date} />
         <div className="menu-container">
           <DatePicker />
           <TeamFilters />
@@ -61,12 +61,14 @@ class App extends Component {
 const mapStateToProps = state => ({
   active: state.filters.selected,
   date: state.date,
+  loaded: !!Object.keys(state.pitchers.items).length,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   fetchStatsByDate,
   fetchDailyStatsByDate,
   fetchTeamGameLogs,
+  fetchAllCumulativeStats,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
