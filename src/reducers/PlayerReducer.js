@@ -86,6 +86,18 @@ const getRatingsToDate = (games, date) => {
 
 export default function PlayerReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
+    case 'FETCH_PITCHER_LOGS_SUCCESS':
+      return {
+        ...state,
+        items: {
+          ...state.items,
+          [action.playerId]: {
+            ...state.items[action.playerId],
+            logs: action.games,
+          },
+        },
+      };
+
     case 'FETCH_HITTER_LOGS_SUCCESS':
       return {
         ...state,

@@ -1,7 +1,7 @@
 import React from 'react';
-import './PlayerLogHeader.scss';
+import './HitterLogHeader.scss';
 
-const PlayerLogHeader = () => {
+const HitterLogHeader = () => {
   const HEADERS = [
     'Date',
     'Opp',
@@ -23,4 +23,4 @@ const PlayerLogHeader = () => {
   );
 };
 
-export default PlayerLogHeader;
+export default HitterLogHeader;

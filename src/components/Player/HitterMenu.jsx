@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PlayerMenuItem from './PlayerMenuItem';
-import './PlayerMenu.scss';
+import HitterMenuItem from './HitterMenuItem';
+import './HitterMenu.scss';
 
-class PlayerMenu extends Component {
+class HitterMenu extends Component {
   static propTypes = {
     upside: React.PropTypes.number,
     averagePoints: React.PropTypes.number,
@@ -55,7 +55,7 @@ class PlayerMenu extends Component {
         {cumulativeStats && Object.keys(cumulativeStats).map((statId) => {
           const stat = cumulativeStats[statId];
           return (
-            <PlayerMenuItem
+            <HitterMenuItem
               key={statId}
               category={statId}
               value={stat['#text']}
@@ -84,4 +84,4 @@ const mapStateToProps = (state, { playerId }) => {
   };
 };
 
-export default connect(mapStateToProps)(PlayerMenu);
+export default connect(mapStateToProps)(HitterMenu);

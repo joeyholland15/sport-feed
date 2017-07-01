@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { logos } from '../../constants/logosByTeam';
-import './Player.scss';
+import './Hitter.scss';
 
 // Power Hitters generally have higher fly ball rates ~44%
 // Contact hitters generally have GB rates close to 50%
 
-class PlayerHeader extends Component {
+class HitterHeader extends Component {
   static propTypes = {
     jerseyNumber: React.PropTypes.string,
     name: React.PropTypes.string,
@@ -51,4 +51,4 @@ const mapStateToProps = (state, { playerId }) => {
   };
 };
 
-export default connect(mapStateToProps)(PlayerHeader);
+export default connect(mapStateToProps)(HitterHeader);

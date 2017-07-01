@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import styles from './Feed.scss';
 import { logos } from '../../constants/logosByTeam';
 import { feedPitcherSelector } from '../../selectors/FeedSelectors';
@@ -43,8 +44,7 @@ class Pitchers extends Component {
             <div>
               <img alt="" src={`${logos[team]}`} />
             </div>
-            <div className="player-name">{playerName}</div>
-            <div className="view-logs" onClick={this.fetchRecent}>Recent</div>
+            <div className="player-name"><Link to={`pitcher/${this.props.pitcherId}`}>{playerName}</Link></div>
           </div>
           <div className="feed-row-cell">{fantasyPoints}</div>
           <div className="feed-row-cell">{`${this.beautifySalary(salary)}`}</div>
@@ -55,7 +55,6 @@ class Pitchers extends Component {
             <LineupAdd gameId={this.props.pitcherId} />
           </div>
         </div>
-        <RecentLogs pitcherId={this.props.pitcherId} />
       </div>
     );
   }

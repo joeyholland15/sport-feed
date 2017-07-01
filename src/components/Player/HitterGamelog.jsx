@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { makeDateNoPretty } from '../../constants/date';
-import './Player.scss';
+import './Hitter.scss';
 
-class PlayerGamelogs extends Component {
+class HitterGamelogs extends Component {
   static propTypes = {
     game: React.PropTypes.shape().isRequired,
     totalGames: React.PropTypes.number.isRequired,
@@ -70,4 +70,4 @@ const mapStateToProps = (state, { playerId }) => {
   };
 };
 
-export default connect(mapStateToProps)(PlayerGamelogs);
+export default connect(mapStateToProps)(HitterGamelogs);

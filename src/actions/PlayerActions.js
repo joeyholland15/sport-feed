@@ -21,6 +21,16 @@ const HITTER_STATS = [
   'XBH', // Extra base hits
 ];
 
+const PITCHER_STATS = [
+  'W',
+  'IP',
+  'SO',
+  'BB',
+  'HR',
+  'H',
+  'ER',
+];
+
 const encryptedAuth = window.btoa(`${USERNAME}:${TOKEN}`);
 
 export function fetchHitterGamelogsSuccess(games, playerId) {
@@ -50,6 +60,37 @@ export function fetchHitterGamelogs(playerId) {
       }
       const games = resp.data.playergamelogs.gamelogs;
       return dispatch(fetchHitterGamelogsSuccess(games, playerId));
+    });
+  };
+}
+
+export function fetchPitcherGamelogsSuccess(games, playerId) {
+  return {
+    type: actions.FETCH_PITCHER_LOGS_SUCCESS,
+    games,
+    playerId,
+  };
+}
+
+export function fetchPitcherGamelogs(playerId) {
+  const url = playerId ?
+    `${SPORTS_FEED_API}player_gamelogs.json?player=${playerId}&playerstats=${PITCHER_STATS.join(',')}` :
+    `${SPORTS_FEED_API}player_gamelogs.json?playerstats=${PITCHER_STATS.join(',')}`;
+
+  return (dispatch) => {
+    dispatch({
+      type: actions.FETCH_PITCHER_LOGS,
+    });
+    return axios.get(url, {
+      headers: {
+        Authorization: `Basic ${encryptedAuth}`,
+      },
+    }).then((resp) => {
+      if (resp.error) {
+        return resp.error;
+      }
+      const games = resp.data.playergamelogs.gamelogs;
+      return dispatch(fetchPitcherGamelogsSuccess(games, playerId));
     });
   };
 }

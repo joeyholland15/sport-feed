@@ -35,7 +35,7 @@ class Hitters extends Component {
           <div className="hitter-team-logo">
             <img alt="" src={`${logos[team]}`} />
           </div>
-          <div className="hitter-team-row"><Link to={`player/${hitterId}`}>{playerName}</Link></div>
+          <div className="hitter-team-row"><Link to={`hitter/${hitterId}`}>{playerName}</Link></div>
         </div>
         <div className="feed-row-cell">{((rating / salary) * 100).toFixed(2)}</div>
         <HitterHistory hitterId={hitterId} />

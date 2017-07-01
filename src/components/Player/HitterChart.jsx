@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import HighCharts from 'highcharts';
 import { connect } from 'react-redux';
-import './PlayerChart.scss';
+import './HitterChart.scss';
 
-class PlayerChart extends Component {
+class HitterChart extends Component {
   static propTypes = {
     stats: React.PropTypes.shape(),
   }
 
   static defaultProps = {
     stats: undefined,
+    position: undefined,
   }
 
   componentDidMount() {
@@ -20,14 +21,24 @@ class PlayerChart extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.stats && nextProps.stats) {
-      this.drawChart(nextProps.stats);
+      this.drawChart(nextProps.stats, nextProps.position);
     }
   }
 
-  drawChart = (stats) => {
-    const lineDrives = Number(stats.BatterLineDrives['#text']);
-    const flyBalls = Number(stats.BatterFlyBalls['#text']);
-    const grounders = Number(stats.BatterGroundBalls['#text']);
+  drawChart = (stats, position) => {
+    let lineDrives;
+    let flyBalls;
+    let grounders;
+
+    if (position === 'P') {
+      lineDrives = Number(stats.PitcherLineDrives['#text']);
+      flyBalls = Number(stats.PitcherFlyBalls['#text']);
+      grounders = Number(stats.PitcherGroundBalls['#text']);
+    } else {
+      lineDrives = Number(stats.BatterLineDrives['#text']);
+      flyBalls = Number(stats.BatterFlyBalls['#text']);
+      grounders = Number(stats.BatterGroundBalls['#text']);
+    }
 
     this.chart = new HighCharts.Chart(
       'chart-container',
@@ -80,11 +91,15 @@ class PlayerChart extends Component {
 }
 
 const mapStateToProps = (state, { playerId }) => {
-  const cumulativeStats = state.players.items[playerId] && state.players.items[playerId].stats;
+  const player = state.players.items[playerId];
+
+  const stats = player && player.stats;
+  const position = player && player.player && player.player.Position;
 
   return {
-    stats: cumulativeStats,
+    stats,
+    position,
   };
 };
 
-export default connect(mapStateToProps)(PlayerChart);
+export default connect(mapStateToProps)(HitterChart);

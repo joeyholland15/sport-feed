@@ -1,7 +1,7 @@
 import React from 'react';
-import './PlayerMenuItem.scss';
+import './HitterMenuItem.scss';
 
-const PlayerMenuItem = ({
+const HitterMenuItem = ({
   category,
   value,
   round,
@@ -19,7 +19,7 @@ const PlayerMenuItem = ({
   );
 };
 
-// PlayerMenuItem.propTypes = {
+// HitterMenuItem.propTypes = {
 //   category: React.PropTypes.string.isRequired,
 //   value: React.PropTypes.oneOf(
 //     React.PropTypes.string,
@@ -28,4 +28,4 @@ const PlayerMenuItem = ({
 //   round: React.PropTypes.bool.isRequired,
 // };
 
-export default PlayerMenuItem;
+export default HitterMenuItem;

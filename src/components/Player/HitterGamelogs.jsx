@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PlayerLogHeader from './PlayerLogHeader';
-import PlayerGamelog from './PlayerGamelog';
+import HitterLogHeader from './HitterLogHeader';
+import HitterGamelog from './HitterGamelog';
 import HitterGamelogContainer from './HitterGamelogContainer';
-import './Player.scss';
+import './Hitter.scss';
 
-class PlayerGamelogs extends Component {
+class HitterGamelogs extends Component {
   static propTypes = {
     playerId: React.PropTypes.string.isRequired,
     playerLogs: React.PropTypes.arrayOf(React.PropTypes.shape()),
@@ -21,9 +21,9 @@ class PlayerGamelogs extends Component {
         <div className="player-body">
           {this.props.playerLogs && (
             <div className="player-logs">
-              <PlayerLogHeader />
+              <HitterLogHeader />
               {this.props.playerLogs.map((game, idx) => (
-                <PlayerGamelog key={game.game.id} game={game} totalGames={idx} />
+                <HitterGamelog key={game.game.id} game={game} totalGames={idx} />
               ))}
             </div>
           )}
@@ -37,4 +37,4 @@ const mapStateToProps = (state, { playerId }) => ({
   playerLogs: state.players.items[playerId] && state.players.items[playerId].logs,
 });
 
-export default connect(mapStateToProps)(PlayerGamelogs);
+export default connect(mapStateToProps)(HitterGamelogs);

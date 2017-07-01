@@ -46,6 +46,15 @@ $image-width: 16px;
 
   .player-name {
     flex: 3;
+
+    a {
+      text-decoration: none;
+      color: black;
+
+      &:hover {
+        color: gray;
+      }
+    }
   }
 
   .hitter-team-logo {
