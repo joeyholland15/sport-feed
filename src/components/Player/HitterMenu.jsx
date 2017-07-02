@@ -1,66 +1,46 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import HitterMenuItem from './HitterMenuItem';
+import HitterMenuSection from './HitterMenuSection';
 import './HitterMenu.scss';
 
 class HitterMenu extends Component {
   static propTypes = {
-    upside: React.PropTypes.number,
-    averagePoints: React.PropTypes.number,
-    playerLogs: React.PropTypes.arrayOf(React.PropTypes.shape()),
-    cumulativeStats: React.PropTypes.shape(),
+    categories: React.PropTypes.shape(),
+    logs: React.PropTypes.arrayOf(React.PropTypes.shape()),
   }
 
   static defaultProps = {
-    upside: 0,
-    averagePoints: 0,
-    playerLogs: [],
-    cumulativeStats: undefined,
+    categories: undefined,
+    logs: undefined,
   }
 
   render() {
     const {
-      upside,
-      averagePoints,
-      playerLogs,
-      cumulativeStats,
+      categories,
+      logs,
     } = this.props;
 
-    let ineligibleCount = 0;
-    let sparqCount = 0;
-    let dozenCount = 0; // games >= 12
-    let inStreakCount = 0;
-    let goodInStreak = 0;
+    const gamesWithoutRecentSparq = logs && logs.filter(game => !game.recentSparq).length;
+    const bombsWithoutRecentSparq = logs &&
+      logs.filter(game => !game.recentSparq && game.points >= 14).length;
 
-    if (playerLogs) {
-      playerLogs.forEach((game, idx) => {
-        if (game.isSparq || game.ruledOut) {
-          ineligibleCount += 1;
-        }
-        if (game.isSparq) {
-          sparqCount += 1;
-        }
-        if (game.points >= 12) {
-          dozenCount += 1;
-        }
-      });
-    }
+    const gamesNotInStreak = logs && logs.filter(game => !game.inStreak).length;
+    const bombsNotInStreak = logs &&
+      logs.filter(game => !game.inStreak && game.points >= 14).length;
 
-    const ineliblePercentage = ineligibleCount ?
-      Math.round((ineligibleCount / playerLogs.length) * 1000) / 1000 : 0;
+    const gamesWithRecentSparq = logs && logs.filter(game => game.recentSparq).length;
+    const bombsWithRecentSparq = logs &&
+      logs.filter(game => game.recentSparq && game.points >= 14).length;
 
     return (
       <div className="player-menu-container">
-        <h4>Season Stats</h4>
-        {cumulativeStats && Object.keys(cumulativeStats).map((statId) => {
-          const stat = cumulativeStats[statId];
+        <div>{`${(bombsWithRecentSparq / gamesWithRecentSparq).toFixed(3)} (${bombsWithRecentSparq} / ${gamesWithRecentSparq})`}</div>
+        <div>{`${(bombsWithoutRecentSparq / gamesWithoutRecentSparq).toFixed(3)} (${bombsWithoutRecentSparq} / ${gamesWithoutRecentSparq})`}</div>
+        <div>{`${(bombsNotInStreak / gamesNotInStreak).toFixed(3)} (${bombsNotInStreak} / ${gamesNotInStreak})`}</div>
+        {categories && Object.keys(categories).map((category) => {
+          const stats = categories[category];
           return (
-            <HitterMenuItem
-              key={statId}
-              category={statId}
-              value={stat['#text']}
-              round
-            />
+            <HitterMenuSection key={category} category={category} stats={stats} />
           );
         })}
       </div>
@@ -69,18 +49,12 @@ class HitterMenu extends Component {
 }
 
 const mapStateToProps = (state, { playerId }) => {
-  const playerLogs = state.players.items[playerId] && state.players.items[playerId].logs;
-  const cumulativeStats = state.players.items[playerId] && state.players.items[playerId].stats;
-  const lastGame = playerLogs && playerLogs[playerLogs.length - 1];
-
-  const averagePoints = (lastGame && lastGame.totalPoints / (playerLogs.length - 1)) || 0;
-  const upside = (lastGame && lastGame.bombCount / (playerLogs.length - 1)) || 0;
+  const categories = state.players.items[playerId] && state.players.items[playerId].categories;
+  const logs = state.players.items[playerId] && state.players.items[playerId].logs;
 
   return {
-    averagePoints,
-    upside,
-    playerLogs,
-    cumulativeStats,
+    categories,
+    logs,
   };
 };
 

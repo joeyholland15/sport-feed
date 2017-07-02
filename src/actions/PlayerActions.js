@@ -1,8 +1,6 @@
 import axios from 'axios';
 import * as actions from './types';
-import { USERNAME, TOKEN } from '../../config';
-
-const SPORTS_FEED_API = 'https://www.mysportsfeeds.com/api/feed/pull/mlb/2016-regular/';
+import { USERNAME, TOKEN, SPORTS_FEED_API } from '../../config';
 
 const HITTER_STATS = [
   'H',

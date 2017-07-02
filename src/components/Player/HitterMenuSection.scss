@@ -1,0 +1,13 @@
+.menu-section {
+  .menu-section-row {
+    display: flex;
+
+    .menu-section-category {
+      flex: 8;
+    }
+
+    .menu-section-value {
+      flex: 1;
+    }
+  }
+}

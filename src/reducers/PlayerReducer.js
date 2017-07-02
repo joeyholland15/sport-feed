@@ -1,4 +1,5 @@
 import { standardDeviation } from '../constants/consistency';
+import { HITTER_CATEGORIES } from '../constants/statCategories';
 
 const INITIAL_STATE = {
   items: {},
@@ -9,6 +10,7 @@ const BOMB_VALUE = 16;
 const SPARQ_GROUPING = 3;
 
 const hasSparq = list => !!list.find(points => points >= SPARQ_VALUE);
+const hasRecentSparq = list => !!list.find(game => game.isSparq);
 
 const calculatePoints = (game) => {
   if (!game || !game.stats) {
@@ -81,7 +83,14 @@ const getRatingsToDate = (games, date) => {
     };
   });
 
-  return gamesWithRatings;
+  return gamesWithRatings && gamesWithRatings.map((game, idx) => {
+    const recentSparq = !!hasRecentSparq(gamesWithRatings.slice(idx - SPARQ_GROUPING, idx));
+
+    return {
+      ...game,
+      recentSparq,
+    };
+  });
 };
 
 export default function PlayerReducer(state = INITIAL_STATE, action) {
@@ -114,13 +123,32 @@ export default function PlayerReducer(state = INITIAL_STATE, action) {
 
     case 'FETCH_CUMULATIVE_PLAYER_STATS_SUCCESS':
     case 'FETCH_ALL_CUMULATIVE_PLAYER_STATS_SUCCESS': {
-      const nextItems = action.stats.reduce((players, player) => ({
-        ...players,
-        [player.player.ID]: {
-          ...players[player.player.ID],
-          ...player,
-        },
-      }), { ...state.items });
+      const nextItems = action.stats.reduce((players, player) => {
+        const categories = {
+          Highlights: {},
+          Hitting: {},
+          Fielding: {},
+        };
+
+        if (player.stats) {
+          Object.keys(player.stats).forEach((stat) => {
+            const category = HITTER_CATEGORIES[stat];
+
+            if (category) {
+              categories[category][stat] = player.stats[stat];
+            }
+          });
+        }
+
+        return {
+          ...players,
+          [player.player.ID]: {
+            ...players[player.player.ID],
+            ...player,
+            categories,
+          },
+        };
+      }, { ...state.items });
 
       return {
         ...state,

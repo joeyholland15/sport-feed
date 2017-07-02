@@ -75,8 +75,10 @@ $vertical-padding: 9px;
   top: 0;
   left: 0;
   opacity: 0;
-  background:rgba(0,0,0,.15);
+  background:rgba(0,0,0,.85);
   transition: opacity 0.2s;
+  color: white;
+  text-align: left;
 
   &:hover {
     opacity: 1;

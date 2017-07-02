@@ -38,7 +38,7 @@ class HitterGamelogs extends Component {
       className = `${className} ruled-out`;
     }
 
-    if (game.inStreak) {
+    if (game.recentSparq) {
       className = `${className} in-streak`;
     }
 

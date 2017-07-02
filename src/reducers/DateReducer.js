@@ -1,4 +1,4 @@
-const INITIAL_STATE = 20160501;
+const INITIAL_STATE = 20170630;
 
 export default function DateReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
