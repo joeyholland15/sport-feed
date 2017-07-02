@@ -1,5 +1,6 @@
 import { standardDeviation } from '../constants/consistency';
 import { HITTER_CATEGORIES } from '../constants/statCategories';
+import { calculateHitterPoints, calculateHitterPointsSeason } from '../constants/calculatePoints';
 
 const INITIAL_STATE = {
   items: {},
@@ -12,28 +13,9 @@ const SPARQ_GROUPING = 3;
 const hasSparq = list => !!list.find(points => points >= SPARQ_VALUE);
 const hasRecentSparq = list => !!list.find(game => game.isSparq);
 
-const calculatePoints = (game) => {
-  if (!game || !game.stats) {
-    return 'DNP';
-  }
-
-  const homeruns = Number(game.stats.Homeruns['#text']);
-  const runs = Number(game.stats.Runs['#text']);
-  const rbis = Number(game.stats.RunsBattedIn['#text']);
-  const doubles = Number(game.stats.SecondBaseHits['#text']);
-  const triples = Number(game.stats.ThirdBaseHits['#text']);
-  const sbs = Number(game.stats.StolenBases['#text']);
-  const bbs = Number(game.stats.BatterWalks['#text']);
-  const hbp = Number(game.stats.HitByPitch['#text']);
-  const singles = Number(game.stats.Hits['#text']) - (homeruns + doubles + triples);
-
-  return (homeruns * 10) + (runs * 2) + (rbis * 2) + (doubles * 5) + (triples * 8) +
-    (sbs * 5) + (bbs * 2) + (hbp * 2) + (singles * 3);
-};
-
 const getStatsToDate = games => (
   games.reduce((stats, game) => {
-    const points = calculatePoints(game);
+    const points = calculateHitterPoints(game);
     const nextBombCount = stats.bombCount || 0;
 
     return {
@@ -52,16 +34,16 @@ const getRatingsToDate = (games, date) => {
   const gamesWithRatings = gamesToDate && gamesToDate.map((game, idx) => {
     let rating = 0;
     let ratingIdx = idx - 1;
-    const points = calculatePoints(game);
+    const points = calculateHitterPoints(game);
 
-    while (ratingIdx >= 0 && calculatePoints(gamesToDate[ratingIdx]) < SPARQ_VALUE) {
-      const prevPoints = calculatePoints(gamesToDate[ratingIdx]);
+    while (ratingIdx >= 0 && calculateHitterPoints(gamesToDate[ratingIdx]) < SPARQ_VALUE) {
+      const prevPoints = calculateHitterPoints(gamesToDate[ratingIdx]);
       rating += (10 - prevPoints);
       ratingIdx -= 1;
     }
 
     const inStreak = hasSparq(gamesToDate.slice(idx - SPARQ_GROUPING, idx)
-      .map(perf => calculatePoints(perf)));
+      .map(perf => calculateHitterPoints(perf)));
     const isSparq = points >= SPARQ_VALUE && !inStreak;
     const ruledOut = !inStreak && points < SPARQ_VALUE;
 
@@ -69,7 +51,7 @@ const getRatingsToDate = (games, date) => {
 
     const statsToDate = getStatsToDate(toDate);
     const consistency = toDate &&
-      standardDeviation(toDate.map(perf => calculatePoints(perf)));
+      standardDeviation(toDate.map(perf => calculateHitterPoints(perf)));
 
     return {
       ...game,
@@ -146,6 +128,7 @@ export default function PlayerReducer(state = INITIAL_STATE, action) {
             ...players[player.player.ID],
             ...player,
             categories,
+            pointsPerGame: calculateHitterPointsSeason(player),
           },
         };
       }, { ...state.items });

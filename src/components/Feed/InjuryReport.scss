@@ -1,0 +1,19 @@
+.injuries-container {
+  .injuries {
+    border: 1px solid #dddddd;
+
+    .injury {
+      display: flex;
+      font-size: 10px;
+      padding: 4px;
+
+      .injury-player {
+        flex: 1;
+      }
+
+      .injury-description {
+        flex: 2;
+      }
+    }
+  }
+}

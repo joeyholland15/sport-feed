@@ -9,6 +9,7 @@ import Scoreboard from './Scoreboard/Scoreboard';
 import HitterPitcherFilters from './Filters/HitterPitcherFilters';
 import DatePicker from './Date/DatePicker';
 import Feed from './Feed/Feed';
+import InjuryReport from './Feed/InjuryReport';
 import './App.scss';
 import { fetchStatsByDate, fetchDailyStatsByDate, fetchTeamGameLogs } from '../actions';
 import { fetchAllCumulativeStats } from '../actions/PlayerActions';
@@ -19,7 +20,6 @@ class App extends Component {
     if (!this.props.loaded) {
       this.props.fetchDailyStatsByDate(this.props.date);
       this.props.fetchStatsByDate(this.props.date);
-      this.props.fetchAllCumulativeStats();
     }
   }
 
@@ -42,10 +42,11 @@ class App extends Component {
         <div className="menu-container">
           <DatePicker />
           <TeamFilters />
-          <SalaryFilters />
+          {/* <SalaryFilters /> */}
           {this.props.active === 'Hitters' && <PositionFilters />}
-          <Scoreboard />
-          <LineupMenu />
+          {/* <Scoreboard /> */}
+          {/* <LineupMenu /> */}
+          {this.props.active === 'Hitters' && <InjuryReport />}
         </div>
         <div className="content-container">
           <div className="content-filters">

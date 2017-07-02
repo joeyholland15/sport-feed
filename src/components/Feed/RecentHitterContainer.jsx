@@ -34,6 +34,7 @@ class RecentHitterContainer extends Component {
 
 const mapStateToProps = state => ({
   dfsCollections: state.dailyFantasy.collections,
+  date: state.date,
 });
 
 export default connect(mapStateToProps, { fetchStatsByDate })(RecentHitterContainer);

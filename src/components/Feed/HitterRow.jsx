@@ -6,6 +6,7 @@ import LineupAdd from '../Lineups/LineupAdd';
 import HittersHeader from './HittersHeader';
 import HitterHistory from './HitterHistory';
 import HitterFuture from './HitterFuture';
+import RecentHitterContainer from './RecentHitterContainer';
 import { logos } from '../../constants/logosByTeam';
 import { feedHitterSelector } from '../../selectors/FeedSelectors';
 

@@ -1,0 +1,17 @@
+.highlights-container {
+  border: 1px solid #dddddd;
+  margin-bottom: 20px;
+  display: flex;
+  font-size: 16px;
+
+  .highlight {
+    flex: 1;
+    text-align: center;
+    border: 1px solid #dddddd;
+    padding: 4px;
+
+    .highlight-category {
+      margin-bottom: 4px;
+    }
+  }
+}

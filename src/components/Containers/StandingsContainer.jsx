@@ -6,15 +6,15 @@ export class StandingsContainer extends React.Component {
   static propTypes = {
     fetchDivisionStandings: React.PropTypes.func.isRequired,
     children: React.PropTypes.node.isRequired,
-    boxScoreData: React.PropTypes.bool,
+    standingsData: React.PropTypes.bool,
   }
 
   static defaultProps = {
-    boxScoreData: true,
+    standingsData: true,
   }
 
   componentDidMount() {
-    if (!this.props.boxScoreData) {
+    if (!this.props.standingsData) {
       this.props.fetchDivisionStandings();
     }
   }
@@ -25,7 +25,7 @@ export class StandingsContainer extends React.Component {
 }
 
 const mapStateToProps = (state, { gameId }) => ({
-  boxScoreData: !!state.boxScores.items[gameId],
+  standingsData: Object.keys(state.league.standings).length > 0,
 });
 
 export default connect(mapStateToProps, { fetchDivisionStandings })(StandingsContainer);

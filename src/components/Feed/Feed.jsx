@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Hitters from './Hitters';
+import HitterFeed from './HitterFeed';
 import Pitchers from './Pitchers';
 import Teams from './Teams';
 import styles from './Feed.scss';
@@ -10,7 +11,8 @@ class Feed extends Component {
     return (
       <div className="feed">
         {this.props.active === 'Pitchers' && <Pitchers />}
-        {this.props.active === 'Hitters' && <Hitters />}
+        {/* {this.props.active === 'Hitters' && <Hitters />} */}
+        {this.props.active === 'Hitters' && <HitterFeed />}
         {this.props.active === 'Teams' && <Teams />}
       </div>
     );

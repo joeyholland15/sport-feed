@@ -12,6 +12,7 @@ import GameLineupReducer from './GameLineupReducer';
 import ResearchReducer from './ResearchReducer';
 import PlayerReducer from './PlayerReducer';
 import LeagueReducer from './LeagueReducer';
+import InjuryReducer from './InjuryReducer';
 
 const rootReducer = combineReducers({
   hitters: HitterReducer,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   research: ResearchReducer,
   players: PlayerReducer,
   league: LeagueReducer,
+  injuries: InjuryReducer,
 });
 
 export default rootReducer;
