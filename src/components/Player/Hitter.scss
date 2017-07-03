@@ -60,6 +60,12 @@
       .large-cell {
         flex: 2;
         text-align: left;
+        cursor: pointer;
+        transition: background 0.3s;
+
+        &:hover {
+          background: gray;
+        }
       }
     }
   }

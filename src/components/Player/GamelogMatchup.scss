@@ -1,0 +1,48 @@
+.matchups {
+  display: flex;
+
+  div {
+    font-size: 14px;
+  }
+
+  .matchup-hitter,
+  .matchup-pitcher {
+    flex: 1;
+  }
+
+  .matchup-player-header {
+    display: flex;
+
+    div {
+      flex: 1;
+      text-align: center;
+    }
+
+    .matchup-player-name {
+      flex: 4;
+      text-align: left;
+    }
+
+    .matchup-player-salary {
+      flex: 2;
+    }
+  }
+}
+
+.matchup-pitcher-logs {
+  display: flex;
+
+  div {
+    flex: 3;
+  }
+
+  .matchup-pitcher-log-points {
+    flex: 1;
+    text-align: right;
+  }
+}
+
+.matchup-date {
+  font-size: 22px;
+  text-align: center;
+}

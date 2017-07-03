@@ -25,7 +25,12 @@ class HitterGamelogs extends Component {
               <HitterHighlights playerId={this.props.playerId} />
               <HitterLogHeader />
               {this.props.playerLogs.map((game, idx) => (
-                <HitterGamelog key={game.game.id} game={game} totalGames={idx} />
+                <HitterGamelog
+                  key={game.game.id}
+                  game={game}
+                  totalGames={idx}
+                  playerId={this.props.playerId}
+                />
               ))}
             </div>
           )}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { makeDateNoPretty } from '../../constants/date';
+import GamelogMatchup from './GamelogMatchup';
 import './Hitter.scss';
 
 class HitterGamelogs extends Component {
@@ -9,10 +10,16 @@ class HitterGamelogs extends Component {
     totalGames: React.PropTypes.number.isRequired,
   }
 
+  state = {
+    isModalOpen: false,
+  }
+
   formatDate = (date) => {
     const dateString = Number(date.split('-').join(''));
     return makeDateNoPretty(dateString);
   }
+
+  toggleModal = () => this.setState({ isModalOpen: !this.state.isModalOpen });
 
   render() {
     const {
@@ -48,7 +55,14 @@ class HitterGamelogs extends Component {
 
     return (
       <div key={`${game.game.id}`} className={className}>
-        <div className="large-cell">{this.formatDate(game.game.date)}</div>
+        <GamelogMatchup
+          isOpen={this.state.isModalOpen}
+          onRequestClose={this.toggleModal}
+          gameId={game.game.id}
+          date={game.game.date.split('-').join('')}
+          playerId={this.props.playerId}
+        />
+        <div className="large-cell" onClick={this.toggleModal}>{this.formatDate(game.game.date)}</div>
         <div>{opp}</div>
         <div>{game.points}</div>
         <div>{game.rating}</div>

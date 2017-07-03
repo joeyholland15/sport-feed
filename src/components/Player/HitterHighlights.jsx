@@ -31,7 +31,7 @@ class HitterHighlights extends Component {
 
 const mapStateToProps = (state, { playerId }) => {
   const player = state.players.items[playerId];
-  const categories = player && player.categories.Highlights;
+  const categories = player && player.categories && player.categories.Highlights;
 
   return {
     stats: {

@@ -15,6 +15,10 @@ export default function GameLineupReducer(state = INITIAL_STATE, action) {
         return {
           ...battingOrders,
           [key]: previousTeamLineup ? [...previousTeamLineup, batterId] : [batterId],
+          [action.gameId]: {
+            atBats: action.atBats,
+            game: action.game,
+          },
         };
       }, { ...state.items });
 

@@ -43,3 +43,13 @@ export const calculatePitcherPoints = (game) => {
 
   return (ip * 2.25) + (k * 2) + (bb * -0.6) + (h * -0.6) + (er * -2) + (w * 4);
 };
+
+export const beautifySalary = (salary) => {
+  if (!salary) {
+    return null;
+  }
+
+  const salaryCharacters = salary.toString().split('');
+  salaryCharacters.splice(salaryCharacters.length - 3, 0, ',');
+  return `$${salaryCharacters.join('')}`;
+};

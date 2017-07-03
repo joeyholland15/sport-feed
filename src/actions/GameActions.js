@@ -4,11 +4,12 @@ import { USERNAME, TOKEN, SPORTS_FEED_API } from '../../config';
 
 const encryptedAuth = window.btoa(`${USERNAME}:${TOKEN}`);
 
-export function fetchPlayByPlaySuccess(atBats, gameId) {
+export function fetchPlayByPlaySuccess(atBats, game, gameId) {
   return {
     type: actions.FETCH_PLAYBYPLAY_SUCCESS,
     atBats,
     gameId,
+    game,
   };
 }
 
@@ -26,7 +27,8 @@ export function fetchPlayByPlay(gameId) {
         return resp.error;
       }
       const atBats = resp.data.gameplaybyplay.atBats.atBat;
-      return dispatch(fetchPlayByPlaySuccess(atBats, gameId));
+      const game = resp.data.gameplaybyplay.game;
+      return dispatch(fetchPlayByPlaySuccess(atBats, game, gameId));
     });
   };
 }
