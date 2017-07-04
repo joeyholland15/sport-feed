@@ -1,3 +1,145 @@
+export const FLY_BALL_MAX = 0.42696629213483145; // James Shields
+export const FLY_BALL_MIN = 0.09375; // Alex Claudio
+export const FLY_BALL_AVERAGE = 0.24749169511209312;
+
+export const FLY_BALL_RANGE = FLY_BALL_MAX - FLY_BALL_MIN;
+
+export const GROUNDER_MAX = 0.7109375; // Alex Claudio
+export const GROUNDER_MIN = 0.2967032967032967; // Chris Hatcher
+export const GROUNDER_AVERAGE = 0.4852731665609216;
+
+export const generateCustomStats = (eligiblePitchers, allPlayers) => {
+  const nextPitchers = allPlayers && allPlayers.map((pitcher) => {
+    const pitchesThrown = pitcher.stats.PitchesThrown && Number(pitcher.stats.PitchesThrown['#text']);
+    const strikesThrown = pitcher.stats.PitcherStrikes && Number(pitcher.stats.PitcherStrikes['#text']);
+    const swings = pitcher.stats.PitcherSwings && Number(pitcher.stats.PitcherSwings['#text']);
+    const swingsMisses = pitcher.stats.PitcherStrikesMiss && Number(pitcher.stats.PitcherStrikesMiss['#text']);
+    const strikesLooking = pitcher.stats.PitcherStrikesLooking && Number(pitcher.stats.PitcherStrikesLooking['#text']);
+    const totalAtBats = pitcher.stats.TotalBattersFaced && Number(pitcher.stats.TotalBattersFaced['#text']);
+    const strikeouts = pitcher.stats.PitcherStrikeouts && Number(pitcher.stats.PitcherStrikeouts['#text']);
+    const walks = pitcher.stats.PitcherWalks && Number(pitcher.stats.PitcherWalks['#text']);
+    const homeruns = pitcher.stats.HomerunsAllowed && Number(pitcher.stats.HomerunsAllowed['#text']);
+
+    const grounders = pitcher.stats.PitcherGroundBalls && Number(pitcher.stats.PitcherGroundBalls['#text']);
+    const liners = pitcher.stats.PitcherLineDrives && Number(pitcher.stats.PitcherLineDrives['#text']);
+    const flyBalls = pitcher.stats.PitcherFlyBalls && Number(pitcher.stats.PitcherFlyBalls['#text']);
+    const ballsInPlay = grounders + liners + flyBalls;
+
+    const customStats = {
+      whiffPercentage: {
+        '#text': swingsMisses / swings,
+      },
+      homerunPercentage: {
+        '#text': homeruns / totalAtBats,
+      },
+      strikeoutPercentage: {
+        '#text': strikeouts / totalAtBats,
+      },
+      walkPercentage: {
+        '#text': walks / totalAtBats,
+      },
+      strikePercentage: {
+        '#text': strikesThrown / pitchesThrown,
+      },
+      strikesNoPiece: {
+        '#text': (strikesLooking + swingsMisses) / strikesThrown,
+      },
+      flyBallRatio: {
+        '#text': flyBalls / ballsInPlay,
+      },
+      grounderRatio: {
+        '#text': grounders / ballsInPlay,
+      },
+    };
+
+    return {
+      ...pitcher,
+      stats: {
+        ...pitcher.stats,
+        ...customStats,
+      },
+    };
+  });
+
+  const statLimits = eligiblePitchers && eligiblePitchers.reduce((limits, pitcher) => {
+    const stats = pitcher.stats;
+    const nextLimits = { ...limits };
+
+    Object.keys(stats).forEach((statId) => {
+      const stat = stats[statId];
+      const currentValue = stat['#text'] === undefined ? Number(stat) : Number(stat['#text']);
+      const prevMin = (nextLimits[statId] && nextLimits[statId].min) || 0;
+      const prevMax = (nextLimits[statId] && nextLimits[statId].max) || 0;
+
+      const nextStat = nextLimits[statId] ? {
+        ...nextLimits[statId],
+        min: Math.min(currentValue, prevMin),
+        max: Math.max(currentValue, prevMax),
+      } : {
+        ...stat,
+        min: Number(currentValue),
+        max: Number(currentValue),
+      };
+      nextLimits[statId] = nextStat;
+    });
+
+    return nextLimits;
+  }, {});
+
+  // now augment percentiles onto players
+  return nextPitchers && nextPitchers.map((pitcher) => {
+    const nextStats = { ...pitcher.stats };
+
+    Object.keys(nextStats).forEach((statId) => {
+      const stat = Number(nextStats[statId]['#text']);
+      const min = statLimits[statId] && Number(statLimits[statId].min);
+      const max = statLimits[statId] && Number(statLimits[statId].max);
+      // console.log(min, max);
+      nextStats[statId] = {
+        ...nextStats[statId],
+        percentile: (stat - min) / (max - min),
+      };
+    });
+
+    return {
+      ...pitcher,
+      stats: nextStats,
+    };
+  });
+};
+
+export const calculatePitcherGrounderRatio = (player) => {
+  if (!player || !player.stats) {
+    return 0;
+  }
+  const grounders = player.stats.PitcherGroundBalls && Number(player.stats.PitcherGroundBalls['#text']);
+  const liners = player.stats.PitcherLineDrives && Number(player.stats.PitcherLineDrives['#text']);
+  const flyBalls = player.stats.PitcherFlyBalls && Number(player.stats.PitcherFlyBalls['#text']);
+
+  const ballsInPlay = grounders + liners + flyBalls;
+
+  const grounderRatio = grounders / ballsInPlay;
+  const value = (grounderRatio - GROUNDER_MIN) / (GROUNDER_MAX - GROUNDER_MIN);
+
+  return Math.round(value * 1000) / 1000;
+};
+
+export const calculatePitcherFlyBallRatio = (player) => {
+  if (!player || !player.stats) {
+    return 0;
+  }
+  const grounders = player.stats.PitcherGroundBalls && Number(player.stats.PitcherGroundBalls['#text']);
+  const liners = player.stats.PitcherLineDrives && Number(player.stats.PitcherLineDrives['#text']);
+  const flyBalls = player.stats.PitcherFlyBalls && Number(player.stats.PitcherFlyBalls['#text']);
+
+  const ballsInPlay = grounders + liners + flyBalls;
+
+  const flyBallRatio = flyBalls / ballsInPlay;
+  const value = (flyBallRatio - FLY_BALL_MIN) / (FLY_BALL_MAX - FLY_BALL_MIN);
+
+  return Math.round(value * 1000) / 1000;
+};
+
 // accepts game object as arg
 export const calculateHitterPoints = (game) => {
   if (!game || !game.stats) {

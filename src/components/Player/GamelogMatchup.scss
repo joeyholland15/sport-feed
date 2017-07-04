@@ -1,6 +1,15 @@
 .matchups {
   display: flex;
 
+  section {
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 20px;
+  }
+
+  section:last-child {
+    border: none;
+  }
+
   div {
     font-size: 14px;
   }
@@ -8,8 +17,14 @@
   .matchup-hitter,
   .matchup-pitcher {
     flex: 1;
+    padding: 20px;
   }
 
+  .matchup-player-traits {
+    margin: 20px 0;
+  }
+
+  .matchup-player-trait,
   .matchup-player-header {
     display: flex;
 
@@ -19,18 +34,30 @@
     }
 
     .matchup-player-name {
-      flex: 4;
+      flex: 2;
       text-align: left;
     }
 
     .matchup-player-salary {
       flex: 2;
     }
+
+    .matchup-value {
+      flex: 1;
+      text-align: right;
+      margin: 0;
+    }
+  }
+
+  .row-titles {
+    text-decoration: underline;
+    margin-bottom: 4px;
   }
 }
 
 .matchup-pitcher-logs {
   display: flex;
+  padding: 4px;
 
   div {
     flex: 3;
@@ -40,6 +67,15 @@
     flex: 1;
     text-align: right;
   }
+}
+
+.matchup-player-trait {
+  padding: 4px;
+}
+
+.matchup-player-trait:nth-child(even),
+.matchup-pitcher-logs:nth-child(even) {
+  background: aliceblue;
 }
 
 .matchup-date {

@@ -1,6 +1,12 @@
 import { standardDeviation } from '../constants/consistency';
 import { HITTER_CATEGORIES } from '../constants/statCategories';
-import { calculateHitterPoints, calculateHitterPointsSeason } from '../constants/calculatePoints';
+import {
+  calculateHitterPoints,
+  calculateHitterPointsSeason,
+  calculatePitcherGrounderRatio,
+  calculatePitcherFlyBallRatio,
+  generateCustomStats,
+} from '../constants/calculatePoints';
 
 const INITIAL_STATE = {
   items: {},
@@ -105,7 +111,12 @@ export default function PlayerReducer(state = INITIAL_STATE, action) {
 
     case 'FETCH_CUMULATIVE_PLAYER_STATS_SUCCESS':
     case 'FETCH_ALL_CUMULATIVE_PLAYER_STATS_SUCCESS': {
-      const nextItems = action.stats.reduce((players, player) => {
+      const eligiblePitchers = action.stats.filter(item => item.player.Position === 'P' &&
+        Number(item.stats.PitchesThrown['#text']) >= 500);
+
+      const playersWithCustomStats = generateCustomStats(eligiblePitchers, action.stats);
+
+      const nextItems = playersWithCustomStats.reduce((players, player) => {
         const categories = {
           Highlights: {},
           Hitting: {},
