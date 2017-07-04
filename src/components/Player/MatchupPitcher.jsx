@@ -44,11 +44,11 @@ class MatchupPitcher extends Component {
               </div>
               <div className="matchup-player-trait">
                 <div className="matchup-player-name">Grounder Ratio</div>
-                <div className="matchup-value">{pitcher && pitcher.grounderPercentile}</div>
+                <div className="matchup-value">{pitcher && pitcher.stats.grounderRatio.percentile}</div>
               </div>
               <div className="matchup-player-trait">
                 <div className="matchup-player-name">Fly Ball Ratio</div>
-                <div className="matchup-value">{pitcher && pitcher.flyBallPercentile}</div>
+                <div className="matchup-value">{pitcher && pitcher.stats.flyBallRatio.percentile}</div>
               </div>
             </section>
             <section>
@@ -73,15 +73,13 @@ class MatchupPitcher extends Component {
 const mapStateToProps = (state, { player, date }) => {
   const pitcherId = player && player.player && player.player.ID;
   const pitcher = state.players.items[pitcherId];
+  // console.log('PITCHER', pitcher);
   const logs = pitcher && pitcher.logs && pitcher.logs.filter(game => Number(game.stats.InningsPitched['#text']) > 0);
 
   const sliceIndex = logs && logs.findIndex(log => log.game.date.split('-').join('') >= date);
   const logsToDate = logs && logs.slice(Math.max(0, sliceIndex - 8), sliceIndex).sort((first, second) => (
     Number(second.game.date.split('-').join('')) - Number(first.game.date.split('-').join(''))
   ));
-
-  // const groundBalls = pitcher && pitcher.stats && pitcher.stats.
-  // const groundBallRatio =
 
   return {
     pitcher,

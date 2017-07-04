@@ -114,7 +114,7 @@ export default function PlayerReducer(state = INITIAL_STATE, action) {
       const eligiblePitchers = action.stats.filter(item => item.player.Position === 'P' &&
         Number(item.stats.PitchesThrown['#text']) >= 500);
 
-      const playersWithCustomStats = generateCustomStats(eligiblePitchers, action.stats);
+      const playersWithCustomStats = generateCustomStats(action.stats);
 
       const nextItems = playersWithCustomStats.reduce((players, player) => {
         const categories = {

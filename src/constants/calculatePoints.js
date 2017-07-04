@@ -8,7 +8,7 @@ export const GROUNDER_MAX = 0.7109375; // Alex Claudio
 export const GROUNDER_MIN = 0.2967032967032967; // Chris Hatcher
 export const GROUNDER_AVERAGE = 0.4852731665609216;
 
-export const generateCustomStats = (eligiblePitchers, allPlayers) => {
+export const generateCustomStats = (allPlayers) => {
   const nextPitchers = allPlayers && allPlayers.map((pitcher) => {
     const pitchesThrown = pitcher.stats.PitchesThrown && Number(pitcher.stats.PitchesThrown['#text']);
     const strikesThrown = pitcher.stats.PitcherStrikes && Number(pitcher.stats.PitcherStrikes['#text']);
@@ -61,6 +61,9 @@ export const generateCustomStats = (eligiblePitchers, allPlayers) => {
     };
   });
 
+  const eligiblePitchers = nextPitchers.filter(item => item.player.Position === 'P' &&
+    Number(item.stats.PitchesThrown['#text']) >= 500);
+
   const statLimits = eligiblePitchers && eligiblePitchers.reduce((limits, pitcher) => {
     const stats = pitcher.stats;
     const nextLimits = { ...limits };
@@ -90,16 +93,35 @@ export const generateCustomStats = (eligiblePitchers, allPlayers) => {
   return nextPitchers && nextPitchers.map((pitcher) => {
     const nextStats = { ...pitcher.stats };
 
+    const playerName = `${pitcher.player.FirstName} ${pitcher.player.LastName}`
+
+    // if (playerName === 'Jon Lester') {
+    //   const stat = Number(nextStats['flyBallRatio']['#text']);
+    //   const min = statLimits['flyBallRatio'] && Number(statLimits['flyBallRatio'].min);
+    //   const max = statLimits['flyBallRatio'] && Number(statLimits['flyBallRatio'].max);
+    //   nextStats['flyBallRatio'] = {
+    //     ...nextStats['flyBallRatio'],
+    //     percentile: (stat - min) / (max - min),
+    //   };
+    //   console.log(nextStats['flyBallRatio'])
+    // }
+
     Object.keys(nextStats).forEach((statId) => {
       const stat = Number(nextStats[statId]['#text']);
       const min = statLimits[statId] && Number(statLimits[statId].min);
       const max = statLimits[statId] && Number(statLimits[statId].max);
-      // console.log(min, max);
       nextStats[statId] = {
         ...nextStats[statId],
         percentile: (stat - min) / (max - min),
       };
     });
+
+    if (playerName === 'Jon Lester') {
+      console.log({
+        ...pitcher,
+        stats: nextStats,
+      })
+    }
 
     return {
       ...pitcher,
