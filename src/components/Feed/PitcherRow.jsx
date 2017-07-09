@@ -68,7 +68,7 @@ const mapStateToProps = (state, { pitcherId }) => {
   const recentLogs = playerLogs && playerLogs.slice(playerLogs.length - 5).reverse();
 
   let opp;
-  if (game) {
+  if (game && game.game) {
     opp = game.game.homeTeam.Abbreviation === game.team.Abbreviation ?
       game.game.awayTeam.Abbreviation : game.game.homeTeam.Abbreviation;
   }

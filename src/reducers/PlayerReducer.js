@@ -3,13 +3,13 @@ import { HITTER_CATEGORIES } from '../constants/statCategories';
 import {
   calculateHitterPoints,
   calculateHitterPointsSeason,
-  calculatePitcherGrounderRatio,
-  calculatePitcherFlyBallRatio,
+  calculatePitcherPointsSeason,
   generateCustomStats,
 } from '../constants/calculatePoints';
 
 const INITIAL_STATE = {
   items: {},
+  loading: false,
 };
 
 const SPARQ_VALUE = 12;
@@ -109,11 +109,14 @@ export default function PlayerReducer(state = INITIAL_STATE, action) {
         },
       };
 
+    case 'FETCH_ALL_CUMULATIVE_PLAYER_STATS':
+      return {
+        ...state,
+        loading: true,
+      };
+
     case 'FETCH_CUMULATIVE_PLAYER_STATS_SUCCESS':
     case 'FETCH_ALL_CUMULATIVE_PLAYER_STATS_SUCCESS': {
-      const eligiblePitchers = action.stats.filter(item => item.player.Position === 'P' &&
-        Number(item.stats.PitchesThrown['#text']) >= 500);
-
       const playersWithCustomStats = generateCustomStats(action.stats);
 
       const nextItems = playersWithCustomStats.reduce((players, player) => {
@@ -133,13 +136,16 @@ export default function PlayerReducer(state = INITIAL_STATE, action) {
           });
         }
 
+        const pointsPerGame = player.player.Position === 'P' ?
+          calculatePitcherPointsSeason(player) : calculateHitterPointsSeason(player);
+
         return {
           ...players,
           [player.player.ID]: {
             ...players[player.player.ID],
             ...player,
             categories,
-            pointsPerGame: calculateHitterPointsSeason(player),
+            pointsPerGame,
           },
         };
       }, { ...state.items });
@@ -147,6 +153,7 @@ export default function PlayerReducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         items: nextItems,
+        loading: false,
       };
     }
 

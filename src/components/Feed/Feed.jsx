@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Hitters from './Hitters';
 import HitterFeed from './HitterFeed';
-import Pitchers from './Pitchers';
+import PitcherFeed from './PitcherFeed';
 import Teams from './Teams';
-import styles from './Feed.scss';
+import './Feed.scss';
+import Loading from '../Chrome/Loading';
 
 class Feed extends Component {
   render() {
     return (
       <div className="feed">
-        {this.props.active === 'Pitchers' && <Pitchers />}
-        {/* {this.props.active === 'Hitters' && <Hitters />} */}
+        {this.props.loading && <Loading size="3x" />}
+        {this.props.active === 'Pitchers' && <PitcherFeed />}
         {this.props.active === 'Hitters' && <HitterFeed />}
         {this.props.active === 'Teams' && <Teams />}
       </div>
@@ -21,6 +21,7 @@ class Feed extends Component {
 
 const mapStateToProps = state => ({
   active: state.filters.selected,
+  loading: state.players.loading,
 });
 
 export default connect(mapStateToProps)(Feed);

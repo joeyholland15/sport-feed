@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import HitterMenuSection from './HitterMenuSection';
+import { playerStatSelector } from '../../selectors/PlayerSelector';
 import './HitterMenu.scss';
 
 class HitterMenu extends Component {
   static propTypes = {
     categories: React.PropTypes.shape(),
     logs: React.PropTypes.arrayOf(React.PropTypes.shape()),
+    stats: React.PropTypes.shape(),
   }
 
   static defaultProps = {
     categories: undefined,
     logs: undefined,
+    stats: undefined,
   }
 
   render() {
@@ -20,29 +22,28 @@ class HitterMenu extends Component {
       logs,
     } = this.props;
 
-    const gamesWithoutRecentSparq = logs && logs.filter(game => !game.recentSparq).length;
-    const bombsWithoutRecentSparq = logs &&
-      logs.filter(game => !game.recentSparq && game.points >= 14).length;
+    const stats = this.props.stats && Object.keys(this.props.stats).sort((first, second) => {
+      const firstObj = this.props.stats[first];
+      const secondObj = this.props.stats[second];
 
-    const gamesNotInStreak = logs && logs.filter(game => !game.inStreak).length;
-    const bombsNotInStreak = logs &&
-      logs.filter(game => !game.inStreak && game.points >= 14).length;
-
-    const gamesWithRecentSparq = logs && logs.filter(game => game.recentSparq).length;
-    const bombsWithRecentSparq = logs &&
-      logs.filter(game => game.recentSparq && game.points >= 14).length;
+      return secondObj.percentile - firstObj.percentile;
+    })
 
     return (
       <div className="player-menu-container">
-        <div>{`${(bombsWithRecentSparq / gamesWithRecentSparq).toFixed(3)} (${bombsWithRecentSparq} / ${gamesWithRecentSparq})`}</div>
-        <div>{`${(bombsWithoutRecentSparq / gamesWithoutRecentSparq).toFixed(3)} (${bombsWithoutRecentSparq} / ${gamesWithoutRecentSparq})`}</div>
-        <div>{`${(bombsNotInStreak / gamesNotInStreak).toFixed(3)} (${bombsNotInStreak} / ${gamesNotInStreak})`}</div>
-        {categories && Object.keys(categories).map((category) => {
-          const stats = categories[category];
-          return (
-            <HitterMenuSection key={category} category={category} stats={stats} />
-          );
-        })}
+        <div>
+          {stats && stats.map((statId) => {
+            const stat = this.props.stats[statId];
+
+            return (
+              <div key={statId} style={{ display: 'flex' }}>
+                <div style={{ flex: 6 }}>{statId}</div>
+                <div style={{ flex: 2 }}>{Math.round(Number(stat['#text']) * 1000) / 1000}</div>
+                <div style={{ flex: 2 }}>{Math.round(Number(stat.percentile) * 1000) / 1000}</div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     );
   }
@@ -51,10 +52,12 @@ class HitterMenu extends Component {
 const mapStateToProps = (state, { playerId }) => {
   const categories = state.players.items[playerId] && state.players.items[playerId].categories;
   const logs = state.players.items[playerId] && state.players.items[playerId].logs;
+  const stats = playerStatSelector(state, playerId);
 
   return {
     categories,
     logs,
+    stats,
   };
 };
 

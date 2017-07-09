@@ -1,6 +1,15 @@
 .matchups {
   display: flex;
 
+  a {
+    text-decoration: none;
+    color: black;
+
+    &:hover {
+      color: gray;
+    }
+  }
+
   section {
     border-bottom: 1px solid #dddddd;
     padding-bottom: 20px;

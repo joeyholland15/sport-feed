@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { beautifySalary, calculatePitcherPoints } from '../../constants/calculatePoints';
 import { makeDateNoPretty } from '../../constants/date';
 import HitterChart from './HitterChart';
@@ -31,7 +32,9 @@ class MatchupPitcher extends Component {
             </div>
             <section className="matchup-player-header">
               <div className="matchup-player-name">
-                {`${player.player.FirstName} ${player.player.LastName}`}
+                <Link to={`/pitcher/${this.props.pitcherId}`}>
+                  {`${player.player.FirstName} ${player.player.LastName}`}
+                </Link>
               </div>
               <div className="matchup-player-salary">{beautifySalary(player.salary)}</div>
               <div>{player.fantasyPoints}</div>
@@ -73,7 +76,6 @@ class MatchupPitcher extends Component {
 const mapStateToProps = (state, { player, date }) => {
   const pitcherId = player && player.player && player.player.ID;
   const pitcher = state.players.items[pitcherId];
-  // console.log('PITCHER', pitcher);
   const logs = pitcher && pitcher.logs && pitcher.logs.filter(game => Number(game.stats.InningsPitched['#text']) > 0);
 
   const sliceIndex = logs && logs.findIndex(log => log.game.date.split('-').join('') >= date);
@@ -84,6 +86,7 @@ const mapStateToProps = (state, { player, date }) => {
   return {
     pitcher,
     logs: logsToDate,
+    pitcherId,
   };
 };
 

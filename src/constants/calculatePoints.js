@@ -93,19 +93,6 @@ export const generateCustomStats = (allPlayers) => {
   return nextPitchers && nextPitchers.map((pitcher) => {
     const nextStats = { ...pitcher.stats };
 
-    const playerName = `${pitcher.player.FirstName} ${pitcher.player.LastName}`
-
-    // if (playerName === 'Jon Lester') {
-    //   const stat = Number(nextStats['flyBallRatio']['#text']);
-    //   const min = statLimits['flyBallRatio'] && Number(statLimits['flyBallRatio'].min);
-    //   const max = statLimits['flyBallRatio'] && Number(statLimits['flyBallRatio'].max);
-    //   nextStats['flyBallRatio'] = {
-    //     ...nextStats['flyBallRatio'],
-    //     percentile: (stat - min) / (max - min),
-    //   };
-    //   console.log(nextStats['flyBallRatio'])
-    // }
-
     Object.keys(nextStats).forEach((statId) => {
       const stat = Number(nextStats[statId]['#text']);
       const min = statLimits[statId] && Number(statLimits[statId].min);
@@ -115,13 +102,6 @@ export const generateCustomStats = (allPlayers) => {
         percentile: (stat - min) / (max - min),
       };
     });
-
-    if (playerName === 'Jon Lester') {
-      console.log({
-        ...pitcher,
-        stats: nextStats,
-      })
-    }
 
     return {
       ...pitcher,
@@ -188,7 +168,7 @@ export const calculateHitterPointsSeason = (seasonStats) => {
 };
 
 export const calculatePitcherPoints = (game) => {
-  const ipText = game.stats.InningsPitched['#text'];
+  const ipText = game.stats.InningsPitched && game.stats.InningsPitched['#text'];
   const fullInnings = ipText && ipText.split('.')[0];
   let inningDecimal = ipText && ipText.split('.')[1];
 
@@ -199,13 +179,18 @@ export const calculatePitcherPoints = (game) => {
   }
 
   const ip = Number(`${fullInnings}.${inningDecimal}`);
-  const k = Number(game.stats.PitcherStrikeouts['#text']);
-  const bb = Number(game.stats.PitcherWalks['#text']);
-  const h = Number(game.stats.HitsAllowed['#text']);
-  const w = Number(game.stats.Wins['#text']);
-  const er = Number(game.stats.EarnedRunsAllowed['#text']);
+  const k = game.stats.PitcherStrikeouts && Number(game.stats.PitcherStrikeouts['#text']);
+  const bb = game.stats.PitcherWalks && (game.stats.PitcherWalks['#text']);
+  const h = game.stats.HitsAllowed && Number(game.stats.HitsAllowed['#text']);
+  const w = game.stats.Wins && Number(game.stats.Wins['#text']);
+  const er = game.stats.EarnedRunsAllowed && Number(game.stats.EarnedRunsAllowed['#text']);
 
   return (ip * 2.25) + (k * 2) + (bb * -0.6) + (h * -0.6) + (er * -2) + (w * 4);
+};
+
+export const calculatePitcherPointsSeason = (seasonStats) => {
+  const totalPoints = calculatePitcherPoints(seasonStats);
+  return totalPoints / Number(seasonStats.stats.GamesPlayed['#text']);
 };
 
 export const beautifySalary = (salary) => {

@@ -39,8 +39,29 @@ const getStatsToDate = games => (
   }, {})
 );
 
+export const getPlayer = (state, playerId) => state.players.items[playerId];
 export const getPlayerLogs = (state, playerId) => state.players.items[playerId] &&
   state.players.items[playerId].logs;
+
+export const playerStatSelector = createSelector(
+  getPlayer,
+  (player) => {
+    const stats = player && { ...player.stats };
+    const position = player && player.player && player.player.Position;
+
+    if (stats) {
+      Object.keys(stats).forEach((statId) => {
+        if (position === 'P' && stats[statId]['@category'] && stats[statId]['@category'] !== 'Pitching') {
+          delete stats[statId];
+        } else if (position !== 'P' && stats[statId]['@category'] && stats[statId]['@category'] !== 'Batting') {
+          delete stats[statId];
+        }
+      });
+    }
+
+    return stats;
+  },
+);
 
 // will add on trend ratings / heat, sparq, etc.
 export const playerLogSelector = createSelector(

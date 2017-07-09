@@ -1,5 +1,6 @@
 import React from 'react';
 import HitterStatContainer from './HitterStatContainer';
+import CumulativeStatContainer from '../Containers/CumulativeStatContainer';
 import HitterHeader from './HitterHeader';
 import HitterChart from './HitterChart';
 import HitterMenu from './HitterMenu';
@@ -10,20 +11,22 @@ import './Hitter.scss';
 // Contact hitters generally have GB rates close to 50%
 
 const Pitcher = ({ playerId }) => (
-  <HitterStatContainer playerId={playerId}>
-    <div className="player-container">
-      <div className="player-info">
-        <HitterHeader playerId={playerId} />
-        <div className="player-chart">
-          <HitterChart playerId={playerId} />
+  <CumulativeStatContainer>
+    <HitterStatContainer playerId={playerId}>
+      <div className="player-container">
+        <div className="player-info">
+          <HitterHeader playerId={playerId} />
+          <div className="player-chart">
+            <HitterChart playerId={playerId} />
+          </div>
+          <div>
+            <HitterMenu playerId={playerId} />
+          </div>
         </div>
-        <div>
-          <HitterMenu playerId={playerId} />
-        </div>
+        <PitcherGamelogs playerId={playerId} />
       </div>
-      <PitcherGamelogs playerId={playerId} />
-    </div>
-  </HitterStatContainer>
+    </HitterStatContainer>
+  </CumulativeStatContainer>
 );
 
 export default Pitcher;
